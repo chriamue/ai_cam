@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->videoStream = std::make_shared<VideoStream>(this);
     ui->videoStreamLayout->addWidget(this->videoStream.get());
+
+    this->neuralNet = std::make_shared<NeuralNetWidget>(this);
+    ui->neuralNetLayout->addWidget(this->neuralNet.get());
     initFolders();
     initImages();
 }

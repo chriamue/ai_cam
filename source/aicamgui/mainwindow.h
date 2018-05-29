@@ -7,6 +7,7 @@
 
 #include <superpixellib/imageeditor.h>
 #include <videostream/videostream.h>
+#include <neuralnet/neuralnetwidget.h>
 
 namespace Ui {
 class MainWindow;
@@ -32,6 +33,7 @@ private:
 
     std::shared_ptr<ImageEditor> imageEditor;
     std::shared_ptr<VideoStream> videoStream;
+    std::shared_ptr<NeuralNetWidget> neuralNet;
     QList<std::string> imagesNames;
 };
 

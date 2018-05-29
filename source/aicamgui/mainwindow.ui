@@ -74,6 +74,16 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Train</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="neuralNetLayout"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>

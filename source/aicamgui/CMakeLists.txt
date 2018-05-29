@@ -96,6 +96,7 @@ target_link_libraries(${target}
     ${META_PROJECT_NAME}::fiblib
     ${META_PROJECT_NAME}::superpixellib
     ${META_PROJECT_NAME}::videostream
+    ${META_PROJECT_NAME}::neuralnet
 )
 
 
