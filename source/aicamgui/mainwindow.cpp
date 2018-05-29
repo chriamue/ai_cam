@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->videoStream = std::make_shared<VideoStream>(this);
+    ui->videoStreamLayout->addWidget(this->videoStream.get());
     initFolders();
     initImages();
 }

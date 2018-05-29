@@ -16,6 +16,7 @@ set(IDE_FOLDER "")
 add_subdirectory(baselib)
 add_subdirectory(fiblib)
 add_subdirectory(superpixellib)
+add_subdirectory(videostream)
 add_subdirectory(aicamgui)
 
 # Examples

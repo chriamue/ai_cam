@@ -6,6 +6,7 @@
 #include <QList>
 
 #include <superpixellib/imageeditor.h>
+#include <videostream/videostream.h>
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +31,7 @@ private:
     void initImages();
 
     std::shared_ptr<ImageEditor> imageEditor;
+    std::shared_ptr<VideoStream> videoStream;
     QList<std::string> imagesNames;
 };
 
