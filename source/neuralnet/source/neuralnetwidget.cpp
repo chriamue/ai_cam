@@ -9,6 +9,7 @@
 #include <QList>
 #include <QString>
 #include <QFileDialog>
+#include <QDebug>
 
 #include <opencv2/highgui.hpp>
 
