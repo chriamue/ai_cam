@@ -15,12 +15,14 @@
 #include <iterator>
 #include <thread>
 
+
+#include <dlib/gui_widgets.h>
+
 using namespace std;
 using namespace dlib;
 
 neuralnet::neuralnet()
 {
-
 }
 
 void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_label_tuples){
@@ -59,7 +61,7 @@ void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_lab
     {
         dlib::rand rnd(time(0)+seed);
         matrix<rgb_pixel> input_image;
-        matrix<rgb_pixel> rgb_label_image;
+        //matrix<rgb_pixel> rgb_label_image;
         matrix<uint16_t> index_label_image;
         training_sample temp;
         while(data.is_enabled())
@@ -71,10 +73,11 @@ void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_lab
             load_image(input_image, image_info.image_filename);
 
             // Load the ground-truth (RGB) labels.
-            load_image(rgb_label_image, image_info.label_filename);
+            //load_image(rgb_label_image, image_info.label_filename);
+            load_image(index_label_image, image_info.label_filename);
 
             // Convert the indexes to RGB values.
-            neuralnet::rgb_label_image_to_index_label_image(rgb_label_image, index_label_image);
+            //neuralnet::rgb_label_image_to_index_label_image(rgb_label_image, index_label_image);
 
             // Randomly pick a part of the image.
             neuralnet::randomly_crop_image(input_image, index_label_image, temp, rnd);
@@ -85,8 +88,8 @@ void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_lab
     };
     std::thread data_loader1([f](){ f(1); });
     std::thread data_loader2([f](){ f(2); });
-    std::thread data_loader3([f](){ f(3); });
-    std::thread data_loader4([f](){ f(4); });
+    //std::thread data_loader3([f](){ f(3); });
+    //std::thread data_loader4([f](){ f(4); });
     unsigned int epochs = 0;
     // The main training loop.  Keep making mini-batches and giving them to the trainer.
     // We will run until the learning rate has dropped by a factor of 1e-4.
@@ -115,8 +118,8 @@ void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_lab
     data.disable();
     data_loader1.join();
     data_loader2.join();
-    data_loader3.join();
-    data_loader4.join();
+    //data_loader3.join();
+    //data_loader4.join();
 
     // also wait for threaded processing to stop in the trainer.
     trainer.get_net();
@@ -161,15 +164,16 @@ cv::Mat neuralnet::predict(std::string imagefile)
     extract_image_chip(temp, chip_details, index_label_image, interpolate_nearest_neighbor());
 
     // Convert the indexes to RGB values.
-    neuralnet::index_label_image_to_rgb_label_image(index_label_image, rgb_label_image);
+   neuralnet::index_label_image_to_rgb_label_image(index_label_image, rgb_label_image);
 
     // Show the input image on the left, and the predicted RGB labels on the right.
-    //win.set_image(join_rows(input_image, rgb_label_image));
+   image_window win;
+    win.set_image(join_rows(input_image, rgb_label_image));
 
     // Find the most prominent class label from amongst the per-pixel predictions.
     const std::string classlabel = get_most_prominent_non_background_classlabel(index_label_image);
-
-    return dlib::toMat(index_label_image);
+    std::cout << classlabel << std::endl;
+    return dlib::toMat(rgb_label_image);
 }
 
 dlib::rectangle neuralnet::make_random_cropping_rect_resnet(const dlib::matrix<dlib::rgb_pixel> &img, dlib::rand &rnd)
@@ -189,7 +193,7 @@ void neuralnet::randomly_crop_image(const dlib::matrix<rgb_pixel> &input_image, 
 {
     const auto rect = make_random_cropping_rect_resnet(input_image, rnd);
 
-    const chip_details chip_details(rect, chip_dims(227, 227));
+    const chip_details chip_details(rect, chip_dims(neuralnet::input_tile_height, neuralnet::input_tile_width));
 
     // Crop the input image.
     extract_image_chip(input_image, chip_details, crop.input_image, interpolate_bilinear());

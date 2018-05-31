@@ -30,6 +30,8 @@ private slots:
 
     void on_saveButton_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::VideoStream *ui;
     std::shared_ptr<cv::VideoCapture> videoCapture;

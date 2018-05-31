@@ -26,6 +26,8 @@ private slots:
 
     void on_imageEditButton_clicked();
 
+    void on_reloadButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     void initFolders();

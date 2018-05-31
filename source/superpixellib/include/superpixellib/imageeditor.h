@@ -15,6 +15,7 @@ class SUPERPIXELLIB_API ImageEditor : public QWidget {
 
 public:
   explicit ImageEditor(std::string imagefile, QWidget *parent = nullptr);
+    explicit ImageEditor(std::string imagefile, std::string labelfile, bool saveOnExit = false, QWidget *parent = nullptr);
   ~ImageEditor();
   void reloadImage();
   int SuperPixel_Seg(cv::Mat src, cv::Mat &matLabels);
@@ -22,20 +23,27 @@ public:
   bool eventFilter(QObject *watched, QEvent *event);
   void paintSuperPixel(QPoint p);
   cv::Mat getSegmentation();
-  QColor idToColor(uint16_t id) const;
+  QColor idToColor(uint8_t id) const;
   void colorize(cv::Mat &src, cv::Mat &dest);
 
+  QPixmap fromMat_flat(cv::Mat &img);
 private slots:
   void on_num_superpixels_valueChanged(int value);
 
+  void on_saveButton_clicked();
+
 private:
+  bool saveOnExit = false;
   Ui::ImageEditor *ui;
+  std::string labelfile;
   cv::Mat image;
   cv::Mat superpixel;
   cv::Mat mask;
   cv::Mat segment;
   cv::Mat segmentation;
   cv::Mat vis_seg;
+
+  cv::Mat labels;
 
   bool mousePressed = false;
 };

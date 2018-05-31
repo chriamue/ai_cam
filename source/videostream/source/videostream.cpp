@@ -52,8 +52,14 @@ void VideoStream::on_stopButton_clicked()
 void VideoStream::on_saveButton_clicked()
 {
     cv::Mat label = cv::Mat::zeros(frame.size(), CV_8U);
-    std::string filename = "images/" + QDateTime::currentDateTime().toString().toStdString() + ".jpg";
-    std::string labelfilename = "labels/" + QDateTime::currentDateTime().toString().toStdString() + ".png";
+    std::string fname =  QDateTime::currentDateTime().toString("yyyyMMdd_hhmmsszz").toStdString();
+    std::string filename = "images/" + fname + ".jpg";
+    std::string labelfilename = "labels/" + fname + ".png";
     cv::imwrite( filename, frame );
     cv::imwrite( labelfilename, label );
+}
+
+void VideoStream::on_pushButton_clicked()
+{
+    ui->sourceLineEdit->setText("rtsp://service:Xbks8tr8vT@193.159.244.134");
 }

@@ -87,9 +87,9 @@ public:
     static std::string get_most_prominent_non_background_classlabel(const dlib::matrix<uint16_t>& index_label_image);
 
 protected:
-    const size_t minibatch_size = 3;//50;
-    const int input_tile_width = 1024; //150;
-    const int input_tile_height = 768; //150;
+    const size_t minibatch_size = 2;//50;
+    static const int input_tile_width = 227; //150;
+    static const int input_tile_height = 227; //150;
     const double initial_learning_rate = 0.1;
     const double weight_decay = 0.0001;
     const double momentum = 0.9;

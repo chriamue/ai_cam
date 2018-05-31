@@ -44,6 +44,9 @@ void MainWindow::initFolders()
 
 void MainWindow::initImages()
 {
+    this->imagesNames.clear();
+    ui->imagesListWidget->clear();
+    ui->labelsListWidget->clear();
     QString dir("images/");
     QDirIterator it(dir, QStringList() << "*.jpg", QDir::Files, QDirIterator::Subdirectories);
     while (it.hasNext()){
@@ -68,7 +71,13 @@ void MainWindow::initImages()
 void MainWindow::on_imageEditButton_clicked()
 {
     QString imagefile = ui->imagesListWidget->currentItem()->text();
+    QString labelfile = ui->labelsListWidget->item(ui->imagesListWidget->currentRow())->text();
     qDebug() << imagefile;
-    imageEditor = std::make_shared<ImageEditor>(imagefile.toStdString(), this);
+    imageEditor = std::make_shared<ImageEditor>(imagefile.toStdString(), labelfile.toStdString(), true, this);
     ui->scrollArea->setWidget(imageEditor.get());
+}
+
+void MainWindow::on_reloadButton_clicked()
+{
+initImages();
 }
