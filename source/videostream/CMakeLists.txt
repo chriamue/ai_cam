@@ -156,6 +156,7 @@ target_link_libraries(${target}
     Qt5::Widgets
     Qt5::MultimediaWidgets
     ${OpenCV_LIBS}
+    ${META_PROJECT_NAME}::neuralnet
     INTERFACE
 )
 

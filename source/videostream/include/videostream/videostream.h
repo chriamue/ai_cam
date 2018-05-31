@@ -7,6 +7,7 @@
 #include <opencv2/videoio.hpp>
 
 #include <videostream/videostream_api.h>
+#include <neuralnet/neuralnet.h>
 
 #include <QTimer>
 
@@ -40,6 +41,7 @@ private:
     QTimer timer;
     int fps = 25;
     cv::Mat frame;
+    std::shared_ptr<neuralnet> neuralNet;
 };
 
 #endif // VIDEOSTREAM_H

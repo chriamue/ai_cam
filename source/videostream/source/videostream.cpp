@@ -12,6 +12,7 @@ VideoStream::VideoStream(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(&timer, SIGNAL(timeout()), this, SLOT(on_read_stream()));
+    this->neuralNet = std::make_shared<neuralnet>();
 }
 
 VideoStream::~VideoStream()
@@ -35,6 +36,9 @@ void VideoStream::on_read_stream()
     if (this->videoCapture->isOpened()) {
 
         this->videoCapture->read(frame);
+        if(ui->aiCheckBox->isChecked()){
+            frame = neuralNet->predict(frame);
+        }
         QImage * img = new QImage((uchar*)frame.data, frame.cols, frame.rows, QImage::Format_RGB888);
         this->pixmap = std::make_shared<QPixmap>(QPixmap::fromImage(*img));
 

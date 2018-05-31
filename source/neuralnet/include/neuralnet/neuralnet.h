@@ -2,7 +2,7 @@
 #define NEURALNET_H
 
 #include <neuralnet/neuralnet_api.h>
-#include <neuralnet/tinyseg-net-structure.hpp>
+//#include <neuralnet/tinyseg-net-structure.hpp>
 #include <neuralnet/dnn_semantic_segmentation_ex.h>
 
 #include <tuple>
@@ -17,6 +17,8 @@ public:
     neuralnet();
     void train(std::vector<std::tuple<std::string,std::string>> image_label_tuples);
     cv::Mat predict(std::string imagefile);
+    cv::Mat predict(cv::Mat image);
+    cv::Mat predict(dlib::matrix<dlib::rgb_pixel> input_image);
 
     // A single training sample. A mini-batch comprises many of these.
     struct training_sample
@@ -88,8 +90,8 @@ public:
 
 protected:
     const size_t minibatch_size = 2;//50;
-    static const int input_tile_width = 227; //150;
-    static const int input_tile_height = 227; //150;
+    static const int input_tile_width = 227;//3*227; //150;
+    static const int input_tile_height = 227;//3*227; //150;
     const double initial_learning_rate = 0.1;
     const double weight_decay = 0.0001;
     const double momentum = 0.9;
@@ -101,7 +103,6 @@ protected:
         cv::Scalar(0, 0, 255),
     };
 
-    tinyseg::net_type net;
 };
 
 #endif // NEURALNET_H
