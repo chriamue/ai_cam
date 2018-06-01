@@ -16,8 +16,16 @@ public:
     void handleAlarm(cv::Mat labelImage);
 
 private:
+    std::string from;
+    std::string to;
+    std::string mailserver;
+    int port;
+    std::string login;
+    std::string password;
+    bool useMail = false;
     void loadAlarmFile();
     std::vector<std::tuple<int,double>> rules;
+    void sendMail(std::string message);
 };
 
 #endif // ALARM_H

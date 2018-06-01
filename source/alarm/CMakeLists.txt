@@ -7,9 +7,8 @@
 find_package(Qt5Core    5.4)
 find_package(Qt5Gui     5.4)
 find_package(Qt5Widgets 5.4)
-find_package(Qt5MultimediaWidgets 5.4)
 find_package(OpenCV 3 REQUIRED)
-find_package(dlib REQUIRED)
+find_package(Poco COMPONENTS Foundation Util Net REQUIRED)
 
 # Enable automoc
 set(CMAKE_AUTOMOC ON)
@@ -160,6 +159,7 @@ target_link_libraries(${target}
     Qt5::Gui
     Qt5::Widgets
     ${OpenCV_LIBS}
+    ${Poco_LIBRARIES}
     INTERFACE
 )
 

@@ -42,6 +42,14 @@ void AlarmWidget::loadAlarmFile()
             item->setSizeHint(ruleItem->minimumSizeHint());
             ui->listWidget->setItemWidget(item, ruleItem);
         }
+        QJsonObject email = root["email"].toObject();
+        ui->fromLineEdit->setText(email.find("from").value().toString());
+        ui->recipientLineEdit->setText(email.find("to").value().toString());
+        ui->mailserverLineEdit->setText(email.find("server").value().toString());
+        ui->portSpinBox->setValue(email.find("port").value().toInt());
+        ui->loginLineEdit->setText(email.find("login").value().toString());
+        ui->passwordLineEdit->setText(email.find("password").value().toString());
+        ui->sendCheckBox->setChecked(email.find("enabled").value().toBool());
     }
 }
 
@@ -64,6 +72,15 @@ void AlarmWidget::on_saveButton_clicked()
         rules.append(item->toJson());
     }
     root["rules"] = rules;
+    root["email"] = QJsonObject{
+            {"enabled", ui->sendCheckBox->isChecked() },
+        {"from", ui->fromLineEdit->text() },
+        {"to", ui->recipientLineEdit->text()},
+        {"server", ui->mailserverLineEdit->text()},
+        {"port", ui->portSpinBox->value()},
+        {"login", ui->loginLineEdit->text()},
+        {"password", ui->passwordLineEdit->text()}
+    };
     doc.setObject(root);
     QFile jsonFile("alarm.json");
     jsonFile.open(QFile::WriteOnly);
