@@ -14,21 +14,51 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QPushButton" name="predictButton">
-     <property name="text">
-      <string>Predict</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
+   <item row="0" column="2">
     <widget class="QPushButton" name="trainButton">
      <property name="text">
       <string>Train</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Epochs</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
+    <widget class="QPushButton" name="predictButton">
+     <property name="text">
+      <string>Predict</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="epochSpinBox">
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
+     </property>
+     <property name="value">
+      <number>10</number>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QProgressBar" name="progressBar">
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="format">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="4">
     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable">
       <bool>true</bool>
@@ -38,15 +68,22 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>362</width>
-        <height>152</height>
+        <width>368</width>
+        <height>123</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
+       <item row="0" column="1">
         <widget class="QLabel" name="imageLabel">
          <property name="text">
-          <string>ImageLabel</string>
+          <string>imageLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="predictLabel">
+         <property name="text">
+          <string>predictedLabel</string>
          </property>
         </widget>
        </item>
@@ -55,6 +92,12 @@
     </widget>
    </item>
   </layout>
+  <zorder>predictButton</zorder>
+  <zorder>scrollArea</zorder>
+  <zorder>epochSpinBox</zorder>
+  <zorder>label</zorder>
+  <zorder>progressBar</zorder>
+  <zorder>trainButton</zorder>
  </widget>
  <resources/>
  <connections/>

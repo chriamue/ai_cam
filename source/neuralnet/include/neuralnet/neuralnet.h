@@ -15,7 +15,7 @@ class NEURALNET_API neuralnet
 {
 public:
     neuralnet();
-    void train(std::vector<std::tuple<std::string,std::string>> image_label_tuples);
+    double train(std::vector<std::tuple<std::string,std::string>> image_label_tuples, int epochs = 10);
     cv::Mat predict(std::string imagefile);
     cv::Mat predict(cv::Mat image);
     cv::Mat predict(dlib::matrix<dlib::rgb_pixel> input_image);
@@ -89,7 +89,10 @@ public:
     static std::string get_most_prominent_non_background_classlabel(const dlib::matrix<uint16_t>& index_label_image);
 
 protected:
-    const size_t minibatch_size = 2;//50;
+    bool netLoaded = false;
+    anet_type net;
+
+    const size_t minibatch_size = 5 ;//50;
     static const int input_tile_width = 227;//3*227; //150;
     static const int input_tile_height = 227;//3*227; //150;
     const double initial_learning_rate = 0.1;

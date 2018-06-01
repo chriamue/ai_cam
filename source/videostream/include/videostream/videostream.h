@@ -7,6 +7,7 @@
 #include <opencv2/videoio.hpp>
 
 #include <videostream/videostream_api.h>
+#include <alarm/alarm.h>
 #include <neuralnet/neuralnet.h>
 
 #include <QTimer>
@@ -33,6 +34,14 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_4_clicked();
+
+    void on_pushButton_5_clicked();
+
 private:
     Ui::VideoStream *ui;
     std::shared_ptr<cv::VideoCapture> videoCapture;
@@ -41,6 +50,7 @@ private:
     QTimer timer;
     int fps = 25;
     cv::Mat frame;
+    std::shared_ptr<Alarm> alarm;
     std::shared_ptr<neuralnet> neuralNet;
 };
 

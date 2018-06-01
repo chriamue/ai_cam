@@ -25,13 +25,13 @@ neuralnet::neuralnet()
 {
 }
 
-void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_label_tuples){
+double neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_label_tuples, int epochs){
     const auto listing = get_listing(image_label_tuples);
     cout << "images in dataset: " << listing.size() << endl;
     if (listing.size() == 0)
     {
         cout << "Didn't find the VOC2012 dataset. " << endl;
-        return;
+        return 0.0;
     }
 
 
@@ -75,7 +75,7 @@ void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_lab
             dlib::matrix<rgb_pixel> resized_input_image;
             resized_input_image.set_size(input_tile_height, input_tile_width);
             dlib::resize_image(input_image, resized_input_image, dlib::interpolate_nearest_neighbor());
-            input_image = resized_input_image;
+            //input_image = resized_input_image;
             //input_image.set_size(input_tile_height, input_tile_width);
 
             // Load the ground-truth (RGB) labels.
@@ -85,15 +85,18 @@ void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_lab
             dlib::matrix<uint16_t> resized_index_label_image;
             resized_index_label_image.set_size(input_tile_height, input_tile_width);
             dlib::resize_image(index_label_image, resized_index_label_image, dlib::interpolate_nearest_neighbor());
-
-            index_label_image = resized_index_label_image;
+            //index_label_image = resized_index_label_image;
             //index_label_image.set_size(input_tile_height, input_tile_width);
 
             // Convert the indexes to RGB values.
             //neuralnet::rgb_label_image_to_index_label_image(rgb_label_image, index_label_image);
 
             // Randomly pick a part of the image.
-            neuralnet::randomly_crop_image(input_image, index_label_image, temp, rnd);
+            //neuralnet::randomly_crop_image(input_image, index_label_image, temp, rnd);
+
+            // no crop -> overfit
+            temp.input_image = resized_input_image;
+            temp.label_image = resized_index_label_image;
 
             // Push the result to be used by the trainer.
             data.enqueue(temp);
@@ -103,13 +106,12 @@ void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_lab
     std::thread data_loader2([f](){ f(2); });
     //std::thread data_loader3([f](){ f(3); });
     //std::thread data_loader4([f](){ f(4); });
-    unsigned int epochs = 0;
+    unsigned int epoch = 0;
     // The main training loop.  Keep making mini-batches and giving them to the trainer.
     // We will run until the learning rate has dropped by a factor of 1e-4.
     while(trainer.get_learning_rate() >= 1e-4 &&
-          epochs < 10)
+          epoch++ < epochs)
     {
-        epochs++;
         samples.clear();
         labels.clear();
 
@@ -148,8 +150,9 @@ void neuralnet::train(std::vector<std::tuple<std::string,std::string>> image_lab
     cout << "Testing the network..." << endl;
 
     // Find the accuracy of the newly trained network on both the training and the validation sets.
-    cout << "train accuracy  :  " << calculate_accuracy(anet, get_listing(image_label_tuples)) << endl;
-
+    double accuracy = calculate_accuracy(anet, get_listing(image_label_tuples));
+    cout << "train accuracy  :  " << accuracy << endl;
+    return accuracy;
 }
 
 cv::Mat neuralnet::predict(std::string imagefile)
@@ -169,9 +172,14 @@ cv::Mat neuralnet::predict(cv::Mat image)
 
 cv::Mat neuralnet::predict(dlib::matrix<rgb_pixel> input_image)
 {
+    int rows = input_image.nr();
+    int cols = input_image.nc();
     // Read the file containing the trained network from the working directory.
-    anet_type net;
-    deserialize("semantic_segmentation.dnn") >> net;
+    if(!netLoaded){
+
+        deserialize("semantic_segmentation.dnn") >> net;
+        netLoaded = true;
+    }
 
     dlib::matrix<rgb_pixel> resized_input_image;
     resized_input_image.set_size(input_tile_height, input_tile_width);
@@ -193,6 +201,11 @@ cv::Mat neuralnet::predict(dlib::matrix<rgb_pixel> input_image)
                 );
     extract_image_chip(temp, chip_details, index_label_image, interpolate_nearest_neighbor());
 
+    //dlib::matrix<uint16_t> resized_index_label_image;
+    //resized_index_label_image.set_size(rows, cols);
+    //dlib::resize_image(index_label_image, resized_index_label_image, dlib::interpolate_nearest_neighbor());
+    //index_label_image = resized_index_label_image;
+
     // Convert the indexes to RGB values.
    neuralnet::index_label_image_to_rgb_label_image(index_label_image, rgb_label_image);
 
@@ -201,9 +214,9 @@ cv::Mat neuralnet::predict(dlib::matrix<rgb_pixel> input_image)
     //win.set_image(join_rows(input_image, rgb_label_image));
 
     // Find the most prominent class label from amongst the per-pixel predictions.
-    const std::string classlabel = get_most_prominent_non_background_classlabel(index_label_image);
-    std::cout << classlabel << std::endl;
-    return dlib::toMat(rgb_label_image);
+    //const std::string classlabel = get_most_prominent_non_background_classlabel(index_label_image);
+    //std::cout << classlabel << std::endl;
+    return dlib::toMat(index_label_image);
 }
 
 dlib::rectangle neuralnet::make_random_cropping_rect_resnet(const dlib::matrix<dlib::rgb_pixel> &img, dlib::rand &rnd)

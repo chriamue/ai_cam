@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1433</width>
+    <width>1503</width>
     <height>1021</height>
    </rect>
   </property>
@@ -14,18 +14,60 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="2">
+    <widget class="QLabel" name="imageLabel">
+     <property name="text">
+      <string>ImageLabel</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="1">
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="5" column="0">
-        <widget class="QPushButton" name="connectButton">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="pushButton">
          <property name="text">
-          <string>Connect</string>
+          <string>rtsp://service:Xbks8tr8vT@193.159.244.134</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="2">
+       <item row="2" column="1">
+        <widget class="QPushButton" name="pushButton_5">
+         <property name="text">
+          <string>/dev/video0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0" colspan="3">
+        <widget class="QLabel" name="predictLabel">
+         <property name="text">
+          <string>predictLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QPushButton" name="stopButton">
+         <property name="text">
+          <string>Stop/Disconnect</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="text">
+          <string>rtsp://admin:abcd1234@123.157.208.2:555</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="text">
+          <string>rtsp://admin:Uniview2018@61.164.52.166:88:555</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
         <spacer name="horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -38,28 +80,42 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="0">
+       <item row="7" column="0">
+        <widget class="QPushButton" name="connectButton">
+         <property name="text">
+          <string>Connect</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>rtsp://admin:a1b2c3d4@60.191.94.122</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Frames:</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Source:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" colspan="2">
+       <item row="3" column="1" colspan="2">
         <widget class="QLineEdit" name="sourceLineEdit">
          <property name="text">
           <string>rtsp://admin:a1b2c3d4@60.191.94.122</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="8" column="1">
+        <widget class="QPushButton" name="saveButton">
+         <property name="text">
+          <string>Save Frame</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
         <widget class="QSpinBox" name="fpsSpinBox">
          <property name="minimum">
           <number>1</number>
@@ -72,31 +128,27 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QPushButton" name="stopButton">
+       <item row="3" column="0">
+        <widget class="QLabel" name="label">
          <property name="text">
-          <string>Stop</string>
+          <string>Source:</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
-        <widget class="QPushButton" name="saveButton">
-         <property name="text">
-          <string>Save</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>rtsp://service:Xbks8tr8vT@193.159.244.134</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
+       <item row="10" column="1">
         <widget class="QCheckBox" name="aiCheckBox">
          <property name="text">
           <string>Use AI</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="2">
+        <widget class="QCheckBox" name="alarmCheckBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>with Alarm</string>
          </property>
         </widget>
        </item>
@@ -104,18 +156,28 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="2">
-    <widget class="QLabel" name="imageLabel">
-     <property name="text">
-      <string>ImageLabel</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="3">
     <layout class="QHBoxLayout" name="horizontalLayout_2"/>
    </item>
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>aiCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>alarmCheckBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>413</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>859</x>
+     <y>417</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
