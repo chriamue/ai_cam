@@ -4,8 +4,6 @@ branches:
   - master
 clone_folder: c:\projects\cmake-init
 image:
-- Visual Studio 2013
-- Visual Studio 2015
 - Visual Studio 2017
 configuration:
 - Release
@@ -29,6 +27,10 @@ init:
 - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" ( set generator="Visual Studio 14 2015%arch%" )
 - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2013" ( set generator="Visual Studio 12 2013%arch%" )
 - echo %generator%
+
+install:
+  - set QTDIR=C:\Qt\5.10.1\msvc2017_64
+  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin
 
 before_build:
 - cmd: |-
