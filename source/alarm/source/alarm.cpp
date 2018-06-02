@@ -3,6 +3,8 @@
 #include <functional>
 #include <iostream>
 
+#include <logger/logger.h>
+
 #include <Poco/Net/MailMessage.h>
 #include <Poco/Net/MailRecipient.h>
 #include <Poco/Net/NetException.h>
@@ -24,10 +26,20 @@ void Alarm::handleAlarm(cv::Mat labelImage)
     for(auto rule: rules){
         int c = std::get<0>(rule);
         double d = std::get<1>(rule);
-        int i = cv::countNonZero(labelImage == c);
-        if((double)i / (double)pixels > d){
-            std::string message = "alarm: " + std::to_string(d) + " @ " + std::to_string( (double)i / (double)pixels);
-            std::cout << message << std::endl;
+        bool l = std::get<2>(rule);
+        cv::Mat cImg = labelImage == c;
+        int i = cv::countNonZero(cImg);
+
+        if(l){
+            if(((double)i / (double)pixels) < d && (i > 0)){
+                std::string message = "alarm (-): class " + std::to_string(c) + " @ " + std::to_string( (double)i / (double)pixels) + " / " + std::to_string(d);
+                Logger::getInstance().log(message);
+            }
+        }else{
+            if(((double)i / (double)pixels) > d && (i > 0)){
+                std::string message = "alarm (+): class " + std::to_string(c) + " @ " + std::to_string( (double)i / (double)pixels) + " / " + std::to_string(d);
+                Logger::getInstance().log(message);
+            }
         }
     }
 }
@@ -45,7 +57,8 @@ void Alarm::loadAlarmFile()
             QJsonObject obj = val.toObject();
             int c = obj.find("class").value().toInt();
             double d = obj.find("thresh").value().toDouble(0.1);
-            auto t = std::make_tuple(c,d);
+            bool l = obj.find("less").value().toBool(true);
+            auto t = std::make_tuple(c,d,l);
             this->rules.push_back(t);
         }
         QJsonObject email = root["email"].toObject();

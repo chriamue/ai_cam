@@ -26,6 +26,8 @@ private slots:
 
     void on_saveButton_clicked();
 
+    void on_removeButton_clicked();
+
 private:
     Ui::AlarmWidget *ui;
     void loadAlarmFile();

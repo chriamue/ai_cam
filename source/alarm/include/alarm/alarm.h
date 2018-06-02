@@ -24,7 +24,7 @@ private:
     std::string password;
     bool useMail = false;
     void loadAlarmFile();
-    std::vector<std::tuple<int,double>> rules;
+    std::vector<std::tuple<int,double,bool>> rules;
     void sendMail(std::string message);
 };
 

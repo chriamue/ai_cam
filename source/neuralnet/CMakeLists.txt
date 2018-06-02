@@ -7,7 +7,6 @@
 find_package(Qt5Core    5.4)
 find_package(Qt5Gui     5.4)
 find_package(Qt5Widgets 5.4)
-find_package(Qt5MultimediaWidgets 5.4)
 find_package(OpenCV 3 REQUIRED)
 find_package(dlib REQUIRED)
 
@@ -160,9 +159,9 @@ target_link_libraries(${target}
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
-    Qt5::MultimediaWidgets
     ${OpenCV_LIBS}
     dlib::dlib
+    ${META_PROJECT_NAME}::logger
     INTERFACE
 )
 

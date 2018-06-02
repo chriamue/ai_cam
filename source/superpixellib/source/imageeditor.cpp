@@ -14,7 +14,7 @@ ImageEditor::ImageEditor(std::string imagefile, QWidget *parent)
     cv::cvtColor(this->image, this->image, cv::COLOR_BGR2RGB);
     this->superpixel = this->image;
     this->segmentation =
-            cv::Mat::zeros(this->image.rows, this->image.cols, CV_16U);
+            cv::Mat::zeros(this->image.rows, this->image.cols, CV_8U);
     this->vis_seg = cv::Mat::zeros(this->image.rows, this->image.cols, CV_8UC3);
     on_num_superpixels_valueChanged(0);
     reloadImage();
@@ -31,10 +31,10 @@ ImageEditor::ImageEditor(std::string imagefile, std::string labelfile, bool save
 
     this->labels = cv::imread(labelfile);
     cv::cvtColor(this->image, this->image, cv::COLOR_BGR2RGB);
-    this->labels.convertTo(this->labels, CV_16U);
+    this->labels.convertTo(this->labels, CV_8U);
     this->superpixel = this->image;
     this->segmentation =
-            cv::Mat::zeros(this->image.rows, this->image.cols, CV_16U);
+            cv::Mat::zeros(this->image.rows, this->image.cols, CV_8U);
     this->vis_seg = cv::Mat::zeros(this->image.rows, this->image.cols, CV_8UC3);
 
     colorize(labels, vis_seg);
@@ -48,10 +48,7 @@ ImageEditor::ImageEditor(std::string imagefile, std::string labelfile, bool save
 
 ImageEditor::~ImageEditor() {
     if(saveOnExit){
-        this->labels.convertTo(this->labels, CV_16U);
-        //cv::imwrite(this->labelfile, this->labels); // real image is smaller bug
-        QPixmap png = fromMat_flat(labels);
-        png.save(QString::fromStdString(labelfile), "PNG");
+        on_saveButton_clicked();
     }
     delete ui; }
 
@@ -191,7 +188,7 @@ void ImageEditor::on_num_superpixels_valueChanged(int value) {
 int ImageEditor::SuperPixel_Seg(cv::Mat src, cv::Mat &matLabels) {
     int height = src.rows, width = src.cols;
     int num_superpixels = ui->num_superpixels->value();
-    int num_level = 1;
+    int num_level = 2;
     int num_iterations = 5;
     cv::Mat mask = src.clone(), result = src.clone();
     cv::Ptr<cv::ximgproc::SuperpixelSEEDS> seeds;
@@ -226,7 +223,8 @@ QPixmap ImageEditor::fromMat_flat(cv::Mat &img) {
 
 void ImageEditor::on_saveButton_clicked()
 {
-    this->labels.convertTo(this->labels, CV_16U);
+
+    this->labels.convertTo(this->labels, CV_8U);
     //cv::imwrite(this->labelfile, this->labels); // real image is smaller bug
     QPixmap png = fromMat_flat(labels);
     png.save(QString::fromStdString(labelfile), "PNG");

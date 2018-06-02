@@ -95,7 +95,7 @@ protected:
     const size_t minibatch_size = 5 ;//50;
     static const int input_tile_width = 227;//3*227; //150;
     static const int input_tile_height = 227;//3*227; //150;
-    const double initial_learning_rate = 0.1;
+    const double initial_learning_rate = 0.01;
     const double weight_decay = 0.0001;
     const double momentum = 0.9;
 

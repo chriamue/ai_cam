@@ -7,8 +7,6 @@
 find_package(Qt5Core    5.4)
 find_package(Qt5Gui     5.4)
 find_package(Qt5Widgets 5.4)
-find_package(Qt5MultimediaWidgets 5.4)
-find_package(OpenCV 3 REQUIRED)
 
 # Enable automoc
 set(CMAKE_AUTOMOC ON)
@@ -21,7 +19,7 @@ set_property(GLOBAL PROPERTY AUTOMOC_FOLDER CMakeAutomocTargets)
 # 
 
 # Target name
-set(target videostream)
+set(target logger)
 
 # Exit here if required dependencies are not met
 message(STATUS "Lib ${target}")
@@ -43,12 +41,12 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
-    ${include_path}/videostream.h
+    ${include_path}/logger.h
 )
 
 set(sources
-    ${source_path}/videostream.cpp
-    ${source_path}/videostream.ui
+    ${source_path}/logger.cpp
+    ${source_path}/logger.ui
 )
 
 # Group source files
@@ -148,17 +146,11 @@ target_include_directories(${target}
 
 target_link_libraries(${target}
     PRIVATE
-
     PUBLIC
     ${DEFAULT_LIBRARIES}
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
-    Qt5::MultimediaWidgets
-    ${OpenCV_LIBS}
-    ${META_PROJECT_NAME}::alarm
-    ${META_PROJECT_NAME}::neuralnet
-    ${META_PROJECT_NAME}::logger
     INTERFACE
 )
 

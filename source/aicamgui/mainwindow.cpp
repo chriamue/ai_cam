@@ -4,7 +4,7 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QDebug>
-
+#include <logger/logger.h>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->neuralNetLayout->addWidget(this->neuralNet.get());
     initFolders();
     initImages();
+    ui->loggerGridLayout->addWidget(&Logger::getInstance());
 }
 
 MainWindow::~MainWindow()

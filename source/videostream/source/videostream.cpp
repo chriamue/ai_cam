@@ -1,6 +1,7 @@
 #include "videostream/videostream.h"
 #include "ui_videostream.h"
 
+#include <logger/logger.h>
 #include <QDebug>
 #include <QTime>
 #include <opencv2/core.hpp>
@@ -28,7 +29,9 @@ void VideoStream::on_connectButton_clicked()
     this->videoCapture = std::make_shared<cv::VideoCapture>(ui->sourceLineEdit->text().toStdString());
 
     if (!this->videoCapture->isOpened()) {
-        qDebug() << "error";
+        Logger::getInstance().log("videostream is not open.");
+    }else{
+        Logger::getInstance().log("connected to " + ui->sourceLineEdit->text().toStdString());
     }
     on_read_stream();
 }
@@ -38,14 +41,16 @@ void VideoStream::on_read_stream()
     if (this->videoCapture->isOpened()) {
 
         this->videoCapture->read(frame);
-        ui->imageLabel->setPixmap(QPixmap::fromImage(QImage((unsigned char*) frame.data, frame.cols, frame.rows, QImage::Format_RGB888)));
+        cvtColor(frame, frame, CV_BGR2RGB);
+        ui->imageLabel->setPixmap(QPixmap::fromImage(QImage((unsigned char*) frame.data, frame.cols, frame.rows,frame.step, QImage::Format_RGB888).scaledToWidth(640)));
         if(ui->aiCheckBox->isChecked()){
-            frame = neuralNet->predict(frame);
+            cv::Mat prediction = neuralNet->predict(frame);
+            prediction.convertTo(prediction,CV_8U);
             cv::Mat rgb;
-            cvtColor(frame, rgb, CV_GRAY2RGB);
-            ui->predictLabel->setPixmap(QPixmap::fromImage(QImage((unsigned char*) rgb.data, rgb.cols, rgb.rows, QImage::Format_RGB888)));
+            cvtColor(prediction, rgb, CV_GRAY2RGB);
+            ui->predictLabel->setPixmap(QPixmap::fromImage(QImage(rgb.data, rgb.cols, rgb.rows, rgb.step, QImage::Format_RGB888).scaledToHeight(480)));
             if(ui->alarmCheckBox->isChecked()){
-                alarm->handleAlarm(frame);
+                alarm->handleAlarm(prediction);
             }
         }else{
             ui->predictLabel->clear();
@@ -64,12 +69,13 @@ void VideoStream::on_stopButton_clicked()
 
 void VideoStream::on_saveButton_clicked()
 {
-    cv::Mat label = cv::Mat::zeros(frame.size(), CV_8U);
+    cv::Mat label = cv::Mat::zeros(frame.size(), CV_16U);
     std::string fname =  QDateTime::currentDateTime().toString("yyyyMMdd_hhmmsszz").toStdString();
     std::string filename = "images/" + fname + ".jpg";
     std::string labelfilename = "labels/" + fname + ".png";
     cv::imwrite( filename, frame );
     cv::imwrite( labelfilename, label );
+    Logger::getInstance().log("Frame saved to " + filename + " and " + labelfilename);
 }
 
 void VideoStream::on_pushButton_clicked()

@@ -160,6 +160,7 @@ target_link_libraries(${target}
     Qt5::Widgets
     ${OpenCV_LIBS}
     ${Poco_LIBRARIES}
+    ${META_PROJECT_NAME}::logger
     INTERFACE
 )
 

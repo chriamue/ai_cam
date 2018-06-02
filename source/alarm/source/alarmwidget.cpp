@@ -86,3 +86,8 @@ void AlarmWidget::on_saveButton_clicked()
     jsonFile.open(QFile::WriteOnly);
     jsonFile.write(doc.toJson());
 }
+
+void AlarmWidget::on_removeButton_clicked()
+{
+    ui->listWidget->takeItem(ui->listWidget->currentRow());
+}

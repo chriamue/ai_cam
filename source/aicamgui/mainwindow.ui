@@ -46,7 +46,7 @@
              <x>0</x>
              <y>0</y>
              <width>722</width>
-             <height>141</height>
+             <height>136</height>
             </rect>
            </property>
           </widget>
@@ -95,6 +95,9 @@
        </layout>
       </widget>
      </widget>
+    </item>
+    <item row="1" column="0">
+     <layout class="QGridLayout" name="loggerGridLayout"/>
     </item>
    </layout>
   </widget>

@@ -17,7 +17,8 @@ QJsonObject RuleItem::toJson()
 {
     QJsonObject obj{
         {"class", ui->classSpinBox->value()},
-        {"thresh", ui->coverSpinBox->value()}
+        {"thresh", ui->coverSpinBox->value()},
+        {"less", ui->checkBox->isChecked()}
     };
     return obj;
 }
@@ -26,4 +27,5 @@ void RuleItem::fromJson(QJsonObject obj)
 {
     ui->classSpinBox->setValue(obj.find("class").value().toInt());
     ui->coverSpinBox->setValue(obj.find("thresh").value().toDouble(0.1));
+    ui->checkBox->setChecked(obj.find("less").value().toBool(true));
 }
