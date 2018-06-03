@@ -45,8 +45,6 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 set(headers
     ${include_path}/neuralnetwidget.h
     ${include_path}/neuralnet.h
-    ${include_path}/tinyseg.hpp
-    ${include_path}/tinyseg-net-structure.hpp
     ${include_path}/dnn_semantic_segmentation_ex.h
 )
 
@@ -54,7 +52,6 @@ set(sources
     ${source_path}/neuralnetwidget.cpp
     ${source_path}/neuralnetwidget.ui
     ${source_path}/neuralnet.cpp
-    ${source_path}/tinyseg.cpp
 )
 
 # Group source files

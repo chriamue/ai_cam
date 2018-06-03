@@ -41,14 +41,15 @@ void VideoStream::on_read_stream()
     if (this->videoCapture->isOpened()) {
 
         this->videoCapture->read(frame);
-        cvtColor(frame, frame, CV_BGR2RGB);
-        ui->imageLabel->setPixmap(QPixmap::fromImage(QImage((unsigned char*) frame.data, frame.cols, frame.rows,frame.step, QImage::Format_RGB888).scaledToWidth(640)));
+        cv::Mat rgbFrame;
+        cvtColor(frame, rgbFrame, CV_BGR2RGB);
+        ui->imageLabel->setPixmap(QPixmap::fromImage(QImage((unsigned char*) rgbFrame.data, rgbFrame.cols, rgbFrame.rows,rgbFrame.step, QImage::Format_RGB888).scaledToWidth(640)));
         if(ui->aiCheckBox->isChecked()){
-            cv::Mat prediction = neuralNet->predict(frame);
+            cv::Mat prediction = neuralNet->predict(rgbFrame);
             prediction.convertTo(prediction,CV_8U);
-            cv::Mat rgb;
-            cvtColor(prediction, rgb, CV_GRAY2RGB);
-            ui->predictLabel->setPixmap(QPixmap::fromImage(QImage(rgb.data, rgb.cols, rgb.rows, rgb.step, QImage::Format_RGB888).scaledToHeight(480)));
+            cv::Mat rgbPrediction;
+            cvtColor(prediction, rgbPrediction, CV_GRAY2RGB);
+            ui->predictLabel->setPixmap(QPixmap::fromImage(QImage(rgbPrediction.data, rgbPrediction.cols, rgbPrediction.rows, rgbPrediction.step, QImage::Format_RGB888).scaledToHeight(480)));
             if(ui->alarmCheckBox->isChecked()){
                 alarm->handleAlarm(prediction);
             }

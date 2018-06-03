@@ -1,3 +1,4 @@
+// source: http://dlib.net/dnn_semantic_segmentation_ex.h.html
 // The contents of this file are in the public domain. See LICENSE_FOR_EXAMPLE_PROGRAMS.txt
 /*
     Semantic segmentation using the PASCAL VOC2012 dataset.

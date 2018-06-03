@@ -1,5 +1,6 @@
+// source: http://dlib.net/dnn_semantic_segmentation_ex.cpp.html
+
 #include <neuralnet/neuralnet.h>
-//#include <neuralnet/tinyseg.hpp>
 #include <neuralnet/dnn_semantic_segmentation_ex.h>
 #include <logger/logger.h>
 
@@ -217,8 +218,8 @@ cv::Mat neuralnet::predict(dlib::matrix<rgb_pixel> input_image)
     //win.set_image(join_rows(input_image, rgb_label_image));
 
     // Find the most prominent class label from amongst the per-pixel predictions.
-    const std::string classlabel = get_most_prominent_non_background_classlabel(index_label_image);
-    std::cout << classlabel << std::endl;
+    //const std::string classlabel = get_most_prominent_non_background_classlabel(index_label_image);
+    //std::cout << classlabel << std::endl;
     return dlib::toMat(index_label_image);
 }
 

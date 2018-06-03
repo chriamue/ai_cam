@@ -62,10 +62,11 @@ void NeuralNetWidget::on_predictButton_clicked()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Image"), "", tr("Image Files (*.png *.jpg *.bmp)"));
     cv::Mat image = cv::imread(fileName.toStdString());
-    //cvtColor(image, image, CV_BGR2RGB);
-    ui->imageLabel->setPixmap(QPixmap::fromImage(QImage((unsigned char*) image.data, image.cols, image.rows, QImage::Format_RGB888).scaledToHeight(480)));
+    cv::Mat rgbImage;
+    cvtColor(image, rgbImage, CV_BGR2RGB);
+    ui->imageLabel->setPixmap(QPixmap::fromImage(QImage((unsigned char*) rgbImage.data, rgbImage.cols, rgbImage.rows,rgbImage.step, QImage::Format_RGB888).scaledToHeight(480)));
     neuralnet n;
-    cv::Mat prediction = n.predict(image);
+    cv::Mat prediction = n.predict(rgbImage);
     prediction.convertTo(prediction,CV_8U);
     cv::Mat rgb;
     cvtColor(prediction, rgb, CV_GRAY2RGB);
