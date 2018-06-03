@@ -9,6 +9,12 @@
 set(MODULE_NAMES
     baselib
     fiblib
+    aicamgui
+    alarm
+    logger
+    neuralnet
+    superpixellib
+    videostream
 )
 
 

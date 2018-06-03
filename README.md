@@ -11,8 +11,10 @@ Camera Stream combined with video segmentation.
 
 ![step 1](data/streamvideo.png "Step 1")
 
-![step 2](data/labelimages.png "Step 1")
+![step 2](data/labelimages.png "Step 2")
 
-![step 3](data/trainpredict.png "Step 1")
+![step 3](data/trainpredict.png "Step 3")
 
-![step 4](data/configurealarm.png "Step 1")
+![step 4](data/configurealarm.png "Step 4")
+
+![step 5](data/run.png "Step 5")
