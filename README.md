@@ -18,3 +18,13 @@ Camera Stream combined with video segmentation.
 ![step 4](data/configurealarm.png "Step 4")
 
 ![step 5](data/run.png "Step 5")
+
+## build and run
+
+```bash
+mkdir build
+cd build
+cmake ..
+cmake --build .
+./aicamgui
+```
