@@ -28,3 +28,11 @@ cmake ..
 cmake --build .
 ./aicamgui
 ```
+
+## run in docker
+
+```bash
+docker-compose build aicam
+xhost +
+docker-compose run --rm aicam
+```

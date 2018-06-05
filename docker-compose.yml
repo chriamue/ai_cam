@@ -1,0 +1,9 @@
+version: '3'
+services:
+  aicam:
+    build: .
+    environment:
+     - DISPLAY=$DISPLAY
+    volumes:
+     - '/tmp/.X11-unix:/tmp/.X11-unix'
+     - '/dev/video0:/dev/video0'
